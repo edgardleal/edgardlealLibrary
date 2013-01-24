@@ -11,7 +11,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import com.edgardleal.annotation.Accessibility;
-import com.edgardleal.annotation.ForeignKey;
 import com.edgardleal.annotation.HtmlVisibility;
 import com.edgardleal.util.DateUtil;
 import com.edgardleal.util.ModelAnalyser;
@@ -20,10 +19,28 @@ import com.edgardleal.util.Str;
 public class HtmlGenerator {
 	private final ModelAnalyser modelAnalyser = new ModelAnalyser();
 	private final String formLine = "<div class=\"formLine\">%s%s</div>";
-	String deleteLine = "<div class='col'><img src='/FinanceManager/img/erase.png' onclick=\"return __delete('%s')\" /></div>",
-			editLine = "<div class='col'><img src='/FinanceManager/img/edit.png' onclick=\"return __alter('%s')\"/></div>";
+	String deleteLine = "<div class='col'><img src='%s' onclick=\"return __delete('%s')\" /></div>",
+			editLine = "<div class='col'><img src='%s' onclick=\"return __alter('%s')\"/></div>";
 
+	private String deleteIcon = Str.EMPTY;
+	private String editIcon = Str.EMPTY;
 	private String pageNewRegister;
+
+	public String getDeleteIcon() {
+		return this.deleteIcon;
+	}
+
+	public void setDeleteIcon(String deleteIcon) {
+		this.deleteIcon = deleteIcon;
+	}
+
+	public String getEditIcon() {
+		return this.editIcon;
+	}
+
+	public void setEditIcon(String editIcon) {
+		this.editIcon = editIcon;
+	}
 
 	public String getPageNewRegister() {
 		return pageNewRegister;
@@ -61,7 +78,7 @@ public class HtmlGenerator {
 			if (!field.isAnnotationPresent(Accessibility.class)
 					|| (field.isAnnotationPresent(Accessibility.class) && field
 							.getAnnotation(Accessibility.class).Visible()))
-				if (field.isAnnotationPresent(ForeignKey.class)) {
+				if (field.isAnnotationPresent(OneToMany.class)) {
 					result.append(String.format(formLine, getLabel(field, obj),
 							getInput(field, obj)));
 				} else
@@ -143,9 +160,9 @@ public class HtmlGenerator {
 			result.append(String.format(
 					"<a href='#' class='linha linha%s linkLine'>",
 					j++ % 2 == 0 ? "Par" : "Impar"));
-			result.append(String.format(editLine,
+			result.append(String.format(editLine, getDeleteIcon(),
 					analyser.getFieldParameters(obj, rs, true)));
-			result.append(String.format(deleteLine,
+			result.append(String.format(deleteLine, getDeleteIcon(),
 					analyser.getFieldParameters(obj, rs)));
 			for (int i = 1; i <= columnCount; i++)
 				result.append(String.format(
@@ -205,10 +222,10 @@ public class HtmlGenerator {
 			result.append(String.format(
 					"<a href='#' class='linha linha%s linkLine'>",
 					j++ % 2 == 0 ? "Par" : "Impar"));
-			result.append(String.format(editLine,
+			result.append(String.format(editLine, getEditIcon(),
 					analyser.getFieldParameters(obj, true)));
 
-			result.append(String.format(deleteLine,
+			result.append(String.format(deleteLine, getDeleteIcon(),
 					analyser.getFieldParameters(obj, true)));
 
 			for (Field f : fields) {

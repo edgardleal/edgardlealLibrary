@@ -1,4 +1,4 @@
-package com.edgardleal.util;
+package com.edgardleal.util.data;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -8,6 +8,8 @@ import java.util.Date;
 
 import com.edgardleal.annotation.AutoIncrement;
 import com.edgardleal.annotation.Id;
+import com.edgardleal.util.Str;
+import com.edgardleal.util.Validator;
 
 public class SQLGenerator {
 	private final String WHERE = "WHERE";

@@ -147,7 +147,10 @@ public class Str {
 		return value + nchar(_char, times - value.length());
 	}
 
-	public Str() {
+	/**
+	 * Não permite isntancias
+	 */
+	private Str() {
 
 	}
 
