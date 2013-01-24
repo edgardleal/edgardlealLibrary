@@ -6,8 +6,8 @@ import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.edgardleal.data.AutoIncrement;
-import com.edgardleal.data.Id;
+import com.edgardleal.annotation.AutoIncrement;
+import com.edgardleal.annotation.Id;
 
 public class SQLGenerator {
 	private final String WHERE = "WHERE";

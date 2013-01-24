@@ -10,9 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import com.edgardleal.annotation.Accessibility;
+import com.edgardleal.annotation.ForeignKey;
 import com.edgardleal.annotation.HtmlVisibility;
-import com.edgardleal.data.Accessibility;
-import com.edgardleal.data.ForeignKey;
 import com.edgardleal.util.DateUtil;
 import com.edgardleal.util.ModelAnalyser;
 import com.edgardleal.util.Str;
