@@ -15,6 +15,7 @@ import com.edgardleal.annotation.HtmlVisibility;
 import com.edgardleal.util.DateUtil;
 import com.edgardleal.util.RefactorTool;
 import com.edgardleal.util.Str;
+import com.edgardleal.util.html.HTMLStringBuffer;
 
 public class HtmlGenerator {
 	private final RefactorTool modelAnalyser = new RefactorTool();

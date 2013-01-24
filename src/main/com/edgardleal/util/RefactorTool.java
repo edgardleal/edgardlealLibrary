@@ -13,6 +13,12 @@ import javax.servlet.ServletRequest;
 import org.apache.catalina.util.URLEncoder;
 import org.apache.log4j.Logger;
 
+import com.edgardleal.util.Config;
+import com.edgardleal.util.DateUtil;
+import com.edgardleal.util.NumberUtil;
+import com.edgardleal.util.Str;
+import com.edgardleal.util.Validator;
+
 /**
  * 
  * @author Edgard Leal
@@ -151,28 +157,6 @@ public class RefactorTool {
 	}
 
 	/**
-	 * verifica se o nome da classe esta correto ( remove espaços indevidos ) <br>
-	 * e faz a transposição para a classe de encapsulamento ( wrapper)<br>
-	 * int = Integer boolean = Boolean double = Double float = Float
-	 * 
-	 * @return
-	 */
-	private String verifyClassName(String value) {
-		value = value.trim().replaceAll(".* (.*)", "$1");
-		switch (value) {
-		case "int":
-			return "java.lang.Integer";
-		case "boolean":
-			return "java.lang.Boolean";
-		case "float":
-			return "java.lang.Float";
-		case "double":
-			return "java.lang.Double";
-		}
-		return value;
-	}
-
-	/**
 	 * Retorna o valor do campo indicado<br>
 	 * OBS:. A classe deve conter um método <code>get</code> correspondente<br>
 	 * 
@@ -206,7 +190,7 @@ public class RefactorTool {
 		return getFieldValue(field.getName(), obj);
 	}
 
-	public void setObjectValue(Object obj, Field field, String value)
+	public void setFieldValue(Object obj, Field field, String value)
 			throws NoSuchMethodException, SecurityException,
 			IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
@@ -246,15 +230,12 @@ public class RefactorTool {
 
 		Field fields[] = o.getClass().getDeclaredFields();
 		for (Field field : fields) {
-			String fieldName = field.getName();
-			String className = verifyClassName(field.getType().toString());
-
+			String fieldName = field.getName().toLowerCase();
+			String className = o.getClass().getSimpleName().toLowerCase();
 			String fieldValue = Str.ifNullOrEmpty(
-					request.getParameter(fieldName), "0");
-			Method method = o.getClass().getMethod(
-					"set" + Str.toPascalCase(fieldName), field.getType());
+					request.getParameter(className + "." + fieldName), "0");
 			try {
-				setObjectValue(o, field, fieldValue);
+				setFieldValue(o, field, fieldValue);
 			} catch (Exception ex) {
 				Logger.getLogger(this.getClass()).error(ex.getMessage(), ex);
 				throw ex;
