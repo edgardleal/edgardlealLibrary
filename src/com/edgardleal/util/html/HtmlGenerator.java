@@ -232,7 +232,7 @@ public class HtmlGenerator {
 				if (!isVisibleToGrid(f))
 					continue;
 				Object _value = modelAnalyser.getValueByClassToView(
-						modelAnalyser.getObjectValue(f, obj), f.getClass(),
+						modelAnalyser.getFieldValue(f, obj), f.getClass(),
 						"dd/MM/yy");
 				result.append(String.format(
 						"<div class='col' style='width:%s'>%s</div>",

@@ -15,8 +15,8 @@ import org.apache.log4j.Logger;
 
 /**
  * 
- * @author edgardr
- * 
+ * @author Edgard Leal
+ * @since 21/01/2013
  */
 public class ModelAnalyser {
 	private final Validator validator = new Validator();
@@ -59,35 +59,16 @@ public class ModelAnalyser {
 	}
 
 	/**
-	 * Retorna o valor de um objeto se este conter um método get correspondente.<br>
-	 * EX.: <code>Object value = getValue(obj, field);</code><br>
-	 * para que funcione, casoo nome do <code>field</code> seja
-	 * <code>nome</code>, devera existir um método <br>
-	 * <code>public <?> getNome()</code>
+	 * Retorna o valor do campo informado, preparado para exibição.
 	 * 
-	 * @param o
+	 * @param obj
 	 * @param field
-	 * @param name
 	 * @return
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
 	 */
-	private Object getValue(Object o, Field field)
-			throws NoSuchMethodException, SecurityException,
-			IllegalAccessException, IllegalArgumentException,
-			InvocationTargetException {
-		Method m = o.getClass().getMethod(
-				"get" + toPascalCase(field.getName()), null);
-		return m.invoke(o, new Object[0]);
-	}
-
 	public String getValueToView(Object obj, Field field) {
 		String result = Str.EMPTY;
 		try {
-			Object value = getValue(obj, field);
+			Object value = getFieldValue(field, obj);
 			if (value == null)
 				return result;
 			result = value.toString();
@@ -107,11 +88,19 @@ public class ModelAnalyser {
 		return result;
 	}
 
+	/**
+	 * Indica se um campo é numérico
+	 * 
+	 * @param f
+	 * @return <code>true</code> quando o campo for
+	 *         <code>int, flot, double , long</code>
+	 */
 	public boolean isNumberField(Field f) {
 		@SuppressWarnings("rawtypes")
 		Class _class = f.getType();
 		return _class.equals(int.class) || _class.equals(float.class)
 				|| _class.equals(double.class) || _class.equals(Integer.class)
+				|| _class.equals(long.class) || _class.equals(Long.class)
 				|| _class.equals(Float.class) || _class.equals(Double.class);
 	}
 
@@ -154,11 +143,6 @@ public class ModelAnalyser {
 		return getFieldParameters(o, enconding);
 	}
 
-	private String toPascalCase(final String value) {
-		return value.substring(0, 1).toUpperCase()
-				+ value.substring(1).toLowerCase();
-	}
-
 	/**
 	 * verifica se o nome da classe esta correto ( remove espaços indevidos ) <br>
 	 * e faz a transposição para a classe de encapsulamento ( wrapper)<br>
@@ -181,11 +165,19 @@ public class ModelAnalyser {
 		return value;
 	}
 
-	public Object getObjectValue(Field field, Object obj) {
+	/**
+	 * Retorna o valor do campo indicado<br>
+	 * OBS:. A classe deve conter um método <code>get</code> correspondente<br>
+	 * 
+	 * @param field
+	 * @param obj
+	 * @return Um <code>Object</code> representando o valor do campo,<br>
+	 *         e <code>null</code> em caso de erro
+	 */
+	public Object getFieldValue(String field, Object obj) {
 		Method m;
 		try {
-			m = obj.getClass().getMethod("get" + toPascalCase(field.getName()),
-					null);
+			m = obj.getClass().getMethod("get" + Str.toPascalCase(field), null);
 			return m.invoke(obj, new Object[0]);
 		} catch (NoSuchMethodException | SecurityException
 				| IllegalAccessException | IllegalArgumentException
@@ -196,13 +188,24 @@ public class ModelAnalyser {
 		}
 	}
 
+	/**
+	 * 
+	 * @see {@link #getFieldValue(String, Object)}
+	 * @param field
+	 * @param obj
+	 * @return
+	 */
+	public Object getFieldValue(Field field, Object obj) {
+		return getFieldValue(field.getName(), obj);
+	}
+
 	public void setObjectValue(Object obj, Field field, String value)
 			throws NoSuchMethodException, SecurityException,
 			IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
 		Method method = null;
 		Object _value = null;
-		String methodName = "set" + toPascalCase(field.getName());
+		String methodName = "set" + Str.toPascalCase(field.getName());
 		if (field.getType().equals(int.class)) {
 			method = obj.getClass().getMethod(methodName, int.class);
 			_value = Integer.valueOf(value);
@@ -242,7 +245,7 @@ public class ModelAnalyser {
 			String fieldValue = Str.ifNullOrEmpty(
 					request.getParameter(fieldName), "0");
 			Method method = o.getClass().getMethod(
-					"set" + toPascalCase(fieldName), field.getType());
+					"set" + Str.toPascalCase(fieldName), field.getType());
 			try {
 				setObjectValue(o, field, fieldValue);
 			} catch (Exception ex) {
@@ -288,7 +291,7 @@ public class ModelAnalyser {
 			String className = method.getParameterTypes()[0].toString()
 					.replaceAll("(.*\\.)(\\w+)", "$2");
 			Method tempMethod = rs.getClass().getMethod(
-					"get" + toPascalCase(className),
+					"get" + Str.toPascalCase(className),
 					new Class[] { fieldName.getClass() });
 			Object fieldValue = tempMethod.invoke(rs, fieldName);
 			method.invoke(o, fieldValue);
