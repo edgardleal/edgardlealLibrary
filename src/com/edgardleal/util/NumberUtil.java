@@ -20,10 +20,17 @@ public class NumberUtil {
 		return format(_value);
 	}
 
-	public static double getDouble(final String value) {
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static double getDouble(final String value)
+			throws NumberFormatException {
 		if (new Validator().isValidNumber(value.trim()))
 			return Double.valueOf(value.trim().replace(",", "."));
 		else
-			return 0D;
+			throw new NumberFormatException(Messages.getMessageIfNull(
+					"NumberUtil.invalidNumber", "Número inválido: ") + value);
 	}
 }

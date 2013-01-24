@@ -18,10 +18,10 @@ import org.apache.log4j.Logger;
  * @author Edgard Leal
  * @since 21/01/2013
  */
-public class ModelAnalyser {
+public class RefactorTool {
 	private final Validator validator = new Validator();
 
-	public ModelAnalyser() {
+	public RefactorTool() {
 
 	}
 
@@ -104,6 +104,13 @@ public class ModelAnalyser {
 				|| _class.equals(Float.class) || _class.equals(Double.class);
 	}
 
+	/**
+	 * Indica se um campo é de algum tipo de número de ponto flutuante<br>
+	 * <code>float, double, Double, Float</code>
+	 * 
+	 * @param f
+	 * @return
+	 */
 	public boolean isFloatField(Field f) {
 		@SuppressWarnings("rawtypes")
 		Class _class = f.getType();

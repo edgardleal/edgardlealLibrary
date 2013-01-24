@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.edgardleal.util.ModelAnalyser;
+import com.edgardleal.util.RefactorTool;
 
 public class TestModelAnalyser {
 	Cliente cliente = null;
@@ -30,9 +30,9 @@ public class TestModelAnalyser {
 	@Test
 	public void testIsNumberField() {
 		try {
-			assertTrue(new ModelAnalyser().isNumberField(cliente.getClass()
+			assertTrue(new RefactorTool().isNumberField(cliente.getClass()
 					.getDeclaredField("codigo")));
-			assertTrue(!new ModelAnalyser().isNumberField(cliente.getClass()
+			assertTrue(!new RefactorTool().isNumberField(cliente.getClass()
 					.getDeclaredField("nome")));
 		} catch (NoSuchFieldException | SecurityException e) {
 			e.printStackTrace();
@@ -42,9 +42,9 @@ public class TestModelAnalyser {
 	@Test
 	public void testIsFloatField() {
 		try {
-			assertTrue(!new ModelAnalyser().isNumberField(cliente.getClass()
+			assertTrue(!new RefactorTool().isNumberField(cliente.getClass()
 					.getDeclaredField("codigo")));
-			assertTrue(!new ModelAnalyser().isNumberField(cliente.getClass()
+			assertTrue(!new RefactorTool().isNumberField(cliente.getClass()
 					.getDeclaredField("nome")));
 		} catch (NoSuchFieldException | SecurityException e) {
 			e.printStackTrace();
@@ -55,7 +55,7 @@ public class TestModelAnalyser {
 	public void testGetValueByClassToView() {
 		try {
 			Field field = cliente.getClass().getDeclaredField("codigo");
-			assertTrue(new ModelAnalyser().getValueToView(cliente, field)
+			assertTrue(new RefactorTool().getValueToView(cliente, field)
 					.equals(new Integer(1)));
 		} catch (NoSuchFieldException | SecurityException e) {
 			e.printStackTrace();

@@ -13,11 +13,11 @@ import javax.persistence.Transient;
 import com.edgardleal.annotation.Accessibility;
 import com.edgardleal.annotation.HtmlVisibility;
 import com.edgardleal.util.DateUtil;
-import com.edgardleal.util.ModelAnalyser;
+import com.edgardleal.util.RefactorTool;
 import com.edgardleal.util.Str;
 
 public class HtmlGenerator {
-	private final ModelAnalyser modelAnalyser = new ModelAnalyser();
+	private final RefactorTool modelAnalyser = new RefactorTool();
 	private final String formLine = "<div class=\"formLine\">%s%s</div>";
 	String deleteLine = "<div class='col'><img src='%s' onclick=\"return __delete('%s')\" /></div>",
 			editLine = "<div class='col'><img src='%s' onclick=\"return __alter('%s')\"/></div>";
@@ -142,7 +142,7 @@ public class HtmlGenerator {
 				.format("<a class=\"linkButton\" onClick='var value = prompt(\"Digite o valor a ser localizado:\"); if(value) location.assign(\"%s%s?action=find&term=\" + value); return false;' href=\"#\">Pesquisar</a></div>",
 						Str.EMPTY, page));
 
-		ModelAnalyser analyser = new ModelAnalyser();
+		RefactorTool analyser = new RefactorTool();
 		ResultSetMetaData meta = rs.getMetaData();
 		int columnCount = meta.getColumnCount();
 		result.append("<div id=\"dataGrid\"><div class='linha' id='gridHeader' style='background:#E8E8E8'>");
@@ -200,7 +200,7 @@ public class HtmlGenerator {
 				.format("<a class=\"linkButton\" onClick='var value = prompt(\"Digite o valor a ser localizado:\"); if(value) location.assign(\"%s%s?action=find&term=\" + value); return false;' href=\"#\">Pesquisar</a></div>",
 						Str.EMPTY, page));
 
-		ModelAnalyser analyser = new ModelAnalyser();
+		RefactorTool analyser = new RefactorTool();
 		result.append("<div id=\"dataGrid\"><div class='linha' id='gridHeader' style='background:#E8E8E8'>");
 		result.append("<div class='col' style='50px'></div>");
 		result.append("<div class='col' style='50px'></div>");
