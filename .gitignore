@@ -1,4 +1,13 @@
+<<<<<<< HEAD
 .metadata
 .settings
 *.jar
 *.class
+=======
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+>>>>>>> 90d10846bbcf931910e517b73b1161697d9ff0ec
