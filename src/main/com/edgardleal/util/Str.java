@@ -3,17 +3,17 @@ package com.edgardleal.util;
 /**
  * Classe de utilitários para trabalho com Strings.
  * 
- * @author edgardr
+ * @author Edgard Leal
  * @since 09-01-2013
  */
 public class Str {
 	/**
-	 * Contem uma string vazia "", deve ser utilizado para diminur o tamanho do
+	 * Contem uma string vazia "", deve ser utilizado para diminur o tamanho do <br>
 	 * pool de Strings da jvm
 	 */
 	public static final String EMPTY = "";
 	/**
-	 * Um espacço em branco.
+	 * Um espaço em branco.
 	 */
 	public static final String SPACE = " ";
 
