@@ -1,0 +1,19 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+.metadata
+.settings
+*.jar
+*.class
+=======
+=======
+>>>>>>> 500069f43668bfaa5758c38784ef7d7aba958019
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+<<<<<<< HEAD
+>>>>>>> 90d10846bbcf931910e517b73b1161697d9ff0ec
+=======
+>>>>>>> 500069f43668bfaa5758c38784ef7d7aba958019
