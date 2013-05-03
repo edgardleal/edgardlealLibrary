@@ -1,7 +1,7 @@
 package com.edgardleal.util;
 
 /**
- * Classe de utilit·rios para trabalho com Strings.
+ * Classe de utilitÔøΩrios para trabalho com Strings.
  * 
  * @author Edgard Leal
  * @since 09-01-2013
@@ -13,33 +13,39 @@ public class Str {
 	 */
 	public static final String EMPTY = "";
 	/**
-	 * Um espaÁo em branco.
+	 * Um espa√ßo em branco.
 	 */
 	public static final String SPACE = " ";
 
-	/**
-	 * Retorna true caso a String informada seja nula ou vazia.<br>
-	 * OBS: no caso de espaÁos em branco, considera-se a string como n„o vazia e
-	 * n„o nula. Se for preciso fazer esta verificaÁ„o utilize desta forma: <br>
-	 * <br>
-	 * 
-	 * if(Str.isNullOrEmpty("  ".trim()))
-	 * 
+	/***
+	 * Retorna as <code>String</code> informada sem os espa√ßos a esquerda <br>
+	 * a direita e sem os caracteres ENTER e TAB
+	 *
 	 * @param value
 	 * @return
 	 */
-	public static boolean isNullOrEmpty(Object value) {
-		return value == null || value.toString().equals(EMPTY);
+	public static String clearSpaces(String value) {
+		value = value.trim().replaceAll(" {2,20}", Str.SPACE)
+				.replaceAll("[\n\t]+", Str.EMPTY);
+		return value;
+	}
+
+	public static String concat(String... args) {
+		StringBuilder builder = new StringBuilder();
+		for (String string : args)
+			builder.append(string);
+		return builder.toString();
 	}
 
 	/**
-	 * Indica se o valor informado n„o esta em branco
-	 * 
+	 * Retorna uma String vazia caso o valor informado seja nul<br>
+	 * caso n√£o seja nulo, retorna o mesmo valor informado.
+	 *
 	 * @param value
 	 * @return
 	 */
-	public static boolean isNotBlank(final String value) {
-		return !value.trim().equals(EMPTY);
+	public static String emptyIfNull(Object value) {
+		return value == null ? Str.EMPTY : value.toString();
 	}
 
 	/**
@@ -49,11 +55,11 @@ public class Str {
 	 * String vazio = ""; <br>
 	 * String _null = null;<br>
 	 * String valor = "A"<br>
-	 * 
+	 *
 	 * ifNullOrEmpty(vazio, valor) // retorna "A" <br>
 	 * ifNullOrEmpty(_null, valor) // retorna "A" <br>
 	 * ifNullOrEmpty("B", valor) // retorna "B" <br>
-	 * 
+	 *
 	 * @param value
 	 *            : valor analizado
 	 * @param result
@@ -61,37 +67,23 @@ public class Str {
 	 * @return String com o melhor valor
 	 */
 	public static String ifNullOrEmpty(String value, String result) {
-		return (value == null || value.equals(EMPTY)) ? result : value;
+		return value == null || value.equals(Str.EMPTY) ? result : value;
 	}
 
 	/**
-	 * Retorna uma String vazia caso o valor informado seja nul<br>
-	 * caso n„o seja nulo, retorna o mesmo valor informado.
-	 * 
+	 * Indica se o valor informado n√£o esta em branco
+	 *
 	 * @param value
 	 * @return
 	 */
-	public static String emptyIfNull(Object value) {
-		return value == null ? EMPTY : value.toString();
-	}
-
-	/***
-	 * Retorna as <code>String</code> informada sem os espaÁos a esquerda <br>
-	 * a direita e sem os caracteres ENTER e TAB
-	 * 
-	 * @param value
-	 * @return
-	 */
-	public static String clearSpaces(String value) {
-		value = value.trim().replaceAll(" {2,20}", SPACE)
-				.replaceAll("[\n\t]+", EMPTY);
-		return value;
+	public static boolean isNotBlank(final String value) {
+		return !value.trim().equals(Str.EMPTY);
 	}
 
 	/**
 	 * retorna o valor informado em "ifNull" caso o valor de "value" seja igual
 	 * a null
-	 * 
+	 *
 	 * @param value
 	 * @param ifNull
 	 * @return
@@ -101,57 +93,18 @@ public class Str {
 	}
 
 	/**
-	 * Retorna uma <code>String</code> formada pelo caractere informado (
-	 * <code>_char</code>) repetido o n˙mero de vezes informado <br>
-	 * no par‚metro <code>times</code>
-	 * 
-	 * @param _char
-	 * @param times
-	 * @return
-	 */
-	public static String nchar(char _char, int times) {
-		String result = EMPTY;
-		for (int i = 0; i < times; i++)
-			result += _char;
-
-		return result;
-	}
-
-	/**
-	 * Retorna uma string precedida do caractere <code>_char</code> repetido ate
-	 * que se complete <br>
-	 * o tamanho informado no par‚metro <code>times</code> <br>
-	 * OBS: time È o tamnaho final da string retornada
-	 * 
+	 * Retorna true caso a String informada seja nula ou vazia.<br>
+	 * OBS: no caso de espa√ßos em branco, considera-se a string como n√£o vazia e
+	 * n√£o nula. Se for preciso fazer esta verifica√ß√£o utilize desta forma: <br>
+	 * <br>
+	 *
+	 * if(Str.isNullOrEmpty(" ".trim()))
+	 *
 	 * @param value
-	 * @param _char
-	 * @param times
 	 * @return
 	 */
-	public static String lpad(String value, char _char, int times) {
-		return nchar(_char, times - value.length()) + value;
-	}
-
-	/**
-	 * Retorna uma string seguida ( a direita ) do caractere <code>_char</code>
-	 * repetido ate que se complete <br>
-	 * o tamanho informado no par‚metro <code>times</code> <br>
-	 * OBS: time È o tamnaho final da string retornada
-	 * 
-	 * @param value
-	 * @param _char
-	 * @param times
-	 * @return
-	 */
-	public static String rpad(String value, char _char, int times) {
-		return value + nchar(_char, times - value.length());
-	}
-
-	/**
-	 * N„o permite isntancias
-	 */
-	private Str() {
-
+	public static boolean isNullOrEmpty(Object value) {
+		return value == null || value.toString().equals(Str.EMPTY);
 	}
 
 	/**
@@ -159,7 +112,7 @@ public class Str {
 	 * gets curtailed and the suffix parameter is appended to it.
 	 * <p/>
 	 * Adapted from Velocity Tools Formatter.
-	 * 
+	 *
 	 * @param value
 	 *            the string value to limit the length of
 	 * @param maxlength
@@ -170,24 +123,58 @@ public class Str {
 	 */
 	public static String limitLength(String value, int maxlength, String suffix) {
 		String ret = value;
-		if (value.length() > maxlength) {
-			ret = value.substring(0, maxlength - suffix.length()) + suffix;
-		}
+		if (value.length() > maxlength)
+			ret = Str.concat(value.substring(0, maxlength - suffix.length()),
+					suffix);
+
 		return ret;
 	}
 
 	/**
-	 * Retorna a palavra informada com a primeira letra em caixa alta<br>
-	 * Ex.:<br>
-	 * <code>Strign value = Str.toPascalCase("nomeFuncionario");</code> <br>
-	 * value = 'NomeFuncionario'
-	 * 
+	 * Retorna uma string precedida do caractere <code>_char</code> repetido ate
+	 * que se complete <br>
+	 * o tamanho informado no par√¢metro <code>times</code> <br>
+	 * OBS: time √© o tamnaho final da string retornada
+	 *
 	 * @param value
+	 * @param _char
+	 * @param times
 	 * @return
 	 */
-	public static String toPascalCase(final String value) {
-		return value.subSequence(0, 1).toString().toUpperCase()
-				+ value.subSequence(1, value.length());
+	public static String lpad(String value, char _char, int times) {
+		return Str.concat(Str.nchar(_char, times - value.length()), value);
+	}
+
+	/**
+	 * Retorna uma <code>String</code> formada pelo caractere informado (
+	 * <code>_char</code>) repetido o n√∫mero de vezes informado <br>
+	 * no par√¢metro <code>times</code>
+	 *
+	 * @param _char
+	 * @param times
+	 * @return
+	 */
+	public static String nchar(char _char, int times) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < times; i++)
+			builder.append(_char);
+
+		return builder.toString();
+	}
+
+	/**
+	 * Retorna uma string seguida ( a direita ) do caractere <code>_char</code>
+	 * repetido ate que se complete <br>
+	 * o tamanho informado no par√¢metro <code>times</code> <br>
+	 * OBS: time √© o tamnaho final da string retornada
+	 *
+	 * @param value
+	 * @param _char
+	 * @param times
+	 * @return
+	 */
+	public static String rpad(String value, char _char, int times) {
+		return Str.concat(value, Str.nchar(_char, times - value.length()));
 	}
 
 	/**
@@ -195,12 +182,33 @@ public class Str {
 	 * Ex.:<br>
 	 * <code>Strign value = Str.toPascalCase("NomeFuncionario");</code><br>
 	 * value = 'NomeFuncionario'
-	 * 
+	 *
 	 * @param value
 	 * @return
 	 */
 	public static String toCamelCase(final String value) {
-		return value.subSequence(0, 1).toString().toLowerCase()
-				+ value.subSequence(1, value.length());
+		return Str.concat(value.subSequence(0, 1).toString().toLowerCase(),
+				String.valueOf(value.subSequence(1, value.length())));
+	}
+
+	/**
+	 * Retorna a palavra informada com a primeira letra em caixa alta<br>
+	 * Ex.:<br>
+	 * <code>Strign value = Str.toPascalCase("nomeFuncionario");</code> <br>
+	 * value = 'NomeFuncionario'
+	 *
+	 * @param value
+	 * @return
+	 */
+	public static String toPascalCase(final String value) {
+		return Str.concat(value.subSequence(0, 1).toString().toUpperCase(),
+				String.valueOf(value.subSequence(1, value.length())));
+	}
+
+	/**
+	 * N√£o permite isntancias
+	 */
+	private Str() {
+
 	}
 }
