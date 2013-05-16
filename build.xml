@@ -9,6 +9,11 @@
     <pathelement location="${tst-dir}" />
     <path refid="classpath.base" />
   </path>
+  
+  <target name="build">
+    <echo>............. Inicio do build ................</echo>
+    
+  </target>
 
   <target name="compile-test">
     <javac srcdir="${tst-dir}"
