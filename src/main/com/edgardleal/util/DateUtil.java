@@ -92,11 +92,30 @@ public class DateUtil {
 	 *            Primeira data e deve ser o valor menor
 	 * @param end
 	 *            segunda data e deve ser o valor maior
-	 * @return retorna o n�mero de minutos entre as duas datas informadas
+	 * @return retorna o n�mero de minutos entre as duas datas informadas
 	 */
 	public long minutesBetween(Date start, Date end) {
 		return (end.getTime() - start.getTime()) / (1000L * 60L);
 	}
+	
+	/**
+	 * Retorna um número inteiro de 1 à 12 representando o mes atual
+	 * 
+	 * @return
+	 */
+	public static int getCurrentMonth() {
+		return Calendar.getInstance().get(Calendar.MONTH);
+	}
+
+	/**
+	 * retorna um valor inteiro representando o ano da data atual do sistema
+	 * 
+	 * @return
+	 */
+	public static int getCurrentYear() {
+		return Calendar.getInstance().get(Calendar.YEAR);
+	}
+
 
 	/**
 	 * Retorna um objeto <code>Calendar</code> referente ao objeto
