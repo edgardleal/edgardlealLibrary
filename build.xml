@@ -1,11 +1,10 @@
 <project default="all">
-  <property name="tst-dir" location="test" />
+  <property name="tst-dir" location="src" />
   <property name="TALK" value="true" />
 
   <path id="classpath.base">
   </path>
   <path id="classpath.test">
-    <pathelement location="/lib/junit.jar" />
     <pathelement location="${tst-dir}" />
     <path refid="classpath.base" />
   </path>

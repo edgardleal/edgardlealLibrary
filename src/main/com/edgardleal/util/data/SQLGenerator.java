@@ -6,8 +6,10 @@ import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.edgardleal.annotation.AutoIncrement;
-import com.edgardleal.annotation.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.edgardleal.util.Str;
 import com.edgardleal.util.Validator;
 
@@ -27,7 +29,7 @@ public class SQLGenerator {
 	}
 
 	/**
-	 * Este método verifica se o valor é nulo para que não seja utilizado <br>
+	 * Este metodo verifica se o valor e nulo para que nao seja utilizado <br>
 	 * os apostofros ('null')
 	 */
 	public Object getMethodValueToSQL(Field f, Object obj)
@@ -68,11 +70,14 @@ public class SQLGenerator {
 
 	public String getUpdate(Object obj) throws Exception {
 		Field[] fields = obj.getClass().getDeclaredFields();
+		Class<? extends Object> classe = obj.getClass();
 		StringBuilder result = new StringBuilder();
 		String condition = Str.EMPTY;
+		String tableName = Str.EMPTY;
 
-		result.append(String.format("UPDATE %s SET ", obj.getClass().getName()
-				.replaceAll("(.*\\.)(.*)", "$2")));
+		tableName = getTableName(classe);
+
+		result.append(String.format("UPDATE %s SET ", tableName));
 		boolean started = false;
 		for (Field field : fields) {
 			if (field.isAnnotationPresent(Id.class)) {
@@ -91,14 +96,27 @@ public class SQLGenerator {
 		return result.toString();
 	}
 
-	public String getInsert(Object obj) {
+	private String getTableName(Class<? extends Object> classe) {
+		String tableName = Str.EMPTY, schemaName = Str.EMPTY;
+		if (classe.isAnnotationPresent(Table.class)) {
+			tableName = classe.getAnnotation(Table.class).name();
+			schemaName = classe.getAnnotation(Table.class).schema();
+		} else
+			tableName = classe.getSimpleName();
+
+		tableName = schemaName.equals(Str.EMPTY) ? tableName : String.format(
+				"%s.%s", schemaName, tableName);
+		return tableName;
+	}
+
+	public String getInsertCommand(Object obj) {
 		Field[] fields = obj.getClass().getDeclaredFields();
 		StringBuilder fieldList = new StringBuilder();
 		StringBuilder valueList = new StringBuilder();
 
 		boolean started = false;
 		for (Field field : fields) {
-			if (!field.isAnnotationPresent(AutoIncrement.class)) {
+			if (!field.isAnnotationPresent(GeneratedValue.class)) {
 				fieldList.append((started ? COMMA : Str.EMPTY)
 						+ field.getName());
 				try {
@@ -112,12 +130,12 @@ public class SQLGenerator {
 			}
 		}
 
-		return String.format("INSERT INTO %s (%s) VALUES(%s)", obj.getClass()
-				.getName().replaceAll("(.*\\.)(.*)", "$2"),
-				fieldList.toString(), valueList.toString());
+		return String.format("INSERT INTO %s (%s) VALUES(%s)",
+				getTableName(obj.getClass()), fieldList.toString(),
+				valueList.toString());
 	}
 
-	public String getDelete(Object obj) {
+	public String getDeleteCommand(Object obj) {
 		Field[] fields = obj.getClass().getDeclaredFields();
 		StringBuilder condition = new StringBuilder();
 
@@ -136,8 +154,7 @@ public class SQLGenerator {
 			}
 		}
 
-		return String.format("DELETE FROM %s WHERE %s", obj.getClass()
-				.getName().replaceAll("(.*\\.)(.*)", "$2"),
-				condition.toString());
+		return String.format("DELETE FROM %s WHERE %s",
+				getTableName(obj.getClass()), condition.toString());
 	}
 }

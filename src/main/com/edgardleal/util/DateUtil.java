@@ -92,7 +92,7 @@ public class DateUtil {
 	 *            Primeira data e deve ser o valor menor
 	 * @param end
 	 *            segunda data e deve ser o valor maior
-	 * @return retorna o número de minutos entre as duas datas informadas
+	 * @return retorna o nï¿½mero de minutos entre as duas datas informadas
 	 */
 	public long minutesBetween(Date start, Date end) {
 		return (end.getTime() - start.getTime()) / (1000L * 60L);
@@ -124,6 +124,7 @@ public class DateUtil {
 		result.set(Calendar.DAY_OF_MONTH, 1);
 		return result;
 	}
+	
 
 	/**
 	 * Vide <code>public Calendar getStartOfMonth(final Calendar value)</code>

@@ -9,15 +9,15 @@ import java.util.Map;
 
 /**
  * Contem um mapa (<code>HashMap</code>) de mensagens estatico para uso da
- * aplicação <br>
- * Para uso, deverá existir um arquivo chamado "messages" na pasta da aplicação<br>
- * As mensagens devem ser escritas contanto que satisfaçam a este reges
+ * aplicacao <br>
+ * Para uso, devera existir um arquivo chamado "messages" na pasta da aplicacao<br>
+ * As mensagens devem ser escritas contanto que satisfaï¿½am a este reges
  * <code>.*=.*</code><br>
- * a única regra, é que seja separado por um "=", o primeiro valor é a chave<br>
+ * a unica regra, e que seja separado por um "=", o primeiro valor ï¿½ a chave<br>
  * Exemplo de arquivo de mansagem:<br>
  * <code>
- * Cliente.cpfInvalido=CPF inválido<br>
- * Produto.estoqueVazio=Não há estoque disponível deste produto
+ * Cliente.cpfInvalido=CPF invï¿½lido<br>
+ * Produto.estoqueVazio=Nao ha estoque disponivel deste produto
  * </code>
  * 
  * @author Edgard Leal
@@ -28,7 +28,7 @@ public class Messages {
 	private static Map<String, String> map = new HashMap<String, String>();
 
 	/**
-	 * Inicialização do arquivo de mensagens
+	 * Inicializaï¿½ï¿½o do arquivo de mensagens
 	 */
 	static {
 		BufferedReader reader = null;
@@ -62,7 +62,7 @@ public class Messages {
 	}
 
 	/**
-	 * Retorna o valor <code>alternative</code> caso não exista a chave
+	 * Retorna o valor <code>alternative</code> caso nï¿½o exista a chave
 	 * informada
 	 * 
 	 * @param key
