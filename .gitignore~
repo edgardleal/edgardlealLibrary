@@ -1,9 +1,0 @@
-.metadata
-.settings
-*.jar
-*.class
-# Package Files #
-*.jar
-*.war
-*.ear
-.netrc
