@@ -3,12 +3,12 @@ package com.edgardleal.util.data;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.apache.commons.beanutils.BeanUtils;
 
 import com.edgardleal.util.Str;
 import com.edgardleal.util.Validator;
@@ -35,7 +35,7 @@ public class SQLGenerator {
 	public Object getMethodValueToSQL(Field f, Object obj)
 			throws InvocationTargetException, IllegalAccessException,
 			NoSuchMethodException {
-		Object result = getMethodValue(f, obj);
+		Object result = BeanUtils.getProperty(obj, f.getName());
 		if (result.toString().equals(NULL)
 				|| (isFieldNumber(f) && new Validator().isValidNumber(result)))
 			return result;
@@ -51,28 +51,11 @@ public class SQLGenerator {
 				|| _class.equals(Float.class) || _class.equals(Double.class);
 	}
 
-	public Object getMethodValue(Field f, Object obj)
-			throws InvocationTargetException, IllegalAccessException,
-			NoSuchMethodException {
-		Method m = obj.getClass().getMethod(
-				"get" + f.getName().substring(0, 1).toUpperCase()
-						+ f.getName().substring(1).toLowerCase(), new Class[0]);
-		Object value = getMethodValue(m, obj);
-		if (f.getType().equals(Date.class)) {
-			if (value != null)
-				return new SimpleDateFormat("yyyy-MM-dd")
-						.format((Date) getMethodValue(m, obj));
-			else
-				return NULL;
-		} else
-			return value;
-	}
-
 	public String getUpdate(Object obj) throws Exception {
 		Field[] fields = obj.getClass().getDeclaredFields();
 		Class<? extends Object> classe = obj.getClass();
 		StringBuilder result = new StringBuilder();
-		String condition = Str.EMPTY;
+		StringBuilder condition = new StringBuilder();
 		String tableName = Str.EMPTY;
 
 		tableName = getTableName(classe);
@@ -81,14 +64,15 @@ public class SQLGenerator {
 		boolean started = false;
 		for (Field field : fields) {
 			if (field.isAnnotationPresent(Id.class)) {
-				condition += (Str.isNullOrEmpty(condition) ? Str.EMPTY
-						: " AND ")
-						+ field.getName()
-						+ equalString
-						+ getMethodValueToSQL(field, obj);
+				condition
+						.append((Str.isNullOrEmpty(condition) ? Str.EMPTY
+								: " AND ")).append(field.getName())
+						.append(equalString)
+						.append(getMethodValueToSQL(field, obj));
 			} else {
-				result.append((started ? "," : Str.EMPTY) + field.getName()
-						+ equalString + getMethodValueToSQL(field, obj));
+				result.append((started ? "," : Str.EMPTY))
+						.append(field.getName()).append(equalString)
+						.append(getMethodValueToSQL(field, obj));
 				started = true;
 			}
 		}
@@ -117,11 +101,11 @@ public class SQLGenerator {
 		boolean started = false;
 		for (Field field : fields) {
 			if (!field.isAnnotationPresent(GeneratedValue.class)) {
-				fieldList.append((started ? COMMA : Str.EMPTY)
-						+ field.getName());
+				fieldList.append((started ? COMMA : Str.EMPTY)).append(
+						field.getName());
 				try {
-					valueList.append((started ? COMMA : Str.EMPTY)
-							+ getMethodValueToSQL(field, obj));
+					valueList.append((started ? COMMA : Str.EMPTY)).append(
+							getMethodValueToSQL(field, obj));
 				} catch (InvocationTargetException | IllegalAccessException
 						| NoSuchMethodException e) {
 					e.printStackTrace();
@@ -143,9 +127,9 @@ public class SQLGenerator {
 		for (Field field : fields) {
 			if (field.isAnnotationPresent(Id.class)) {
 				try {
-					condition.append((started ? " AND " : Str.EMPTY)
-							+ field.getName() + equalString
-							+ getMethodValueToSQL(field, obj));
+					condition.append(String.format("%s%s%s%s",
+							(started ? " AND " : Str.EMPTY), field.getName(),
+							equalString, getMethodValueToSQL(field, obj)));
 				} catch (InvocationTargetException | IllegalAccessException
 						| NoSuchMethodException e) {
 					e.printStackTrace();
