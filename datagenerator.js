@@ -13,11 +13,12 @@ function getRandomEmail(){
 
 }
 
+var genders = ["Male", "Female"];
 function getRantomGender(){
-
+  return genders[Math.round(genders.length * Math.random())];
 }
 
-fuction getHTMLTable(){
+function getHTMLTable(count){
    var table = $("<table><thread></thead><tbody></tbody></table>");
    var thead = table.find('thead');
    thead.append("<tr>" + 
@@ -29,13 +30,15 @@ fuction getHTMLTable(){
       "</tr>");
       
   var tbody = table.find('tbody');
-  for(var i = 0; i < 100; i++)
+  
+  var _count =  count&&typeof count === "number"?count:100;
+  for(var i = 0; i < _count; i++)
     tbody.append("<tr>" + 
     "<td>" + i + "</td>" +
     "<td>" + getRandomName() + "</td>" +
     "<td>" + getRandomPhone() + "</td>" +
     "<td>" + i + "</td>" +
-    "<td>" + i + "</td>" +    
+    "<td>" + getRantomGender() + "</td>" +    
     "</tr>");
 
 
