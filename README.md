@@ -1,7 +1,9 @@
-java
+##Personal java utilities
+
+[![Build Status](https://travis-ci.org/edgardleal/edgardlealLibrary.svg?branch=master)](https://travis-ci.org/edgardleal/edgardlealLibrary)
 ====
 
-Minhas bibliotecas java
+
 =======
 edgardlealLibrary
 =================
